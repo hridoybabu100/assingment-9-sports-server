@@ -15,7 +15,7 @@ app.use(express.json())
 
 
 
-const uri = "mongodb+srv://SportsManagement:74nAeGsaRe9FkSvB@cluster0.gkrxgec.mongodb.net/?appName=Cluster0";
+const uri = process.env.SERVER_URI_LINK;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -34,6 +34,13 @@ async function run() {
 
     const db = client.db("SportsManagement");
     const sportCollection = db.collection("sportCollection");
+
+    // Delete
+    app.delete("/sports/:id", async(req, res)=>{
+      const {id} = req.params
+      const result = await sportCollection.deleteOne({_id : new ObjectId(id)})
+      res.send(result)
+    })
 
 
     // patch Updated
