@@ -15,7 +15,7 @@ app.use(express.json())
 
 
 
-const uri = process.env.SERVER_URI_LINK;
+const uri = process.env.SERVER_URI_LINK
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -69,6 +69,13 @@ async function run() {
     app.post("/sports", async(req, res) => {
       const postData = req.body
       const result = await sportCollection.insertOne(postData);
+      res.send(result)
+    })
+
+
+    // players
+    app.get("/sports", async(req, res) => {
+      const result = await sportCollection.find(4).limit().toArray()
       res.send(result)
     })
 
