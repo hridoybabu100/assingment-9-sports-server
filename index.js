@@ -34,6 +34,15 @@ async function run() {
 
     const db = client.db("SportsManagement");
     const sportCollection = db.collection("sportCollection");
+
+
+    // patch Updated
+    app.patch("/sports/:id", async(req, res) => {
+      const {id} = req.params
+      const updateData = req.body
+      const result = await sportCollection.updateOne({ _id : new ObjectId(id)}, { $set : updateData})
+      res.send(result)
+    })
     //Sports Details
     app.get("/sports/:id", async(req, res) => {
       const {id} = req.params
