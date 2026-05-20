@@ -26,6 +26,22 @@ const client = new MongoClient(uri, {
   }
 });
 
+
+const verifyToken = (req, res, next)=>{
+  const header = req?.headers.authorization
+  if(!header){
+    return res.status(401).json({ message : "Unauthorize"})
+  }
+  // console.log(header);
+  const token = header.split(" ")[1]
+    if(!token){
+    return res.status(401).json({ message : "Unauthorize"})
+  }
+  // console.log(token);
+  
+  next()
+}
+
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
@@ -78,7 +94,7 @@ async function run() {
       res.send(result)
     })
     //Sports Details
-    app.get("/sports/:id", async(req, res) => {
+    app.get("/sports/:id", verifyToken, async(req, res) => {
       const {id} = req.params
       const query = {_id : new ObjectId(id)}
       const result = await sportCollection.findOne(query)
