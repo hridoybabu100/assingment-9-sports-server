@@ -1,7 +1,7 @@
 const express = require("express");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
-const dns = require("node:dns").promises;
-dns.setServers(["8.8.8.8", "8.8.4.4"]);
+// const dns = require("node:dns").promises;
+// dns.setServers(["8.8.8.8", "8.8.4.4"]);
 const app = express();
 const cors = require("cors");
 const dotenv = require("dotenv");
@@ -24,7 +24,7 @@ const client = new MongoClient(uri, {
   },
 });
 
-const jwt = createRemoteJWKSet(new URL("http://localhost:3000/api/auth/jwks"));
+const jwt = createRemoteJWKSet(new URL(`${process.env.CLIENT_URI_LINK}/api/auth/jwks`));
 
 const verifyToken = async (req, res, next) => {
   const header = req?.headers.authorization;
@@ -49,7 +49,7 @@ const verifyToken = async (req, res, next) => {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
 
     const db = client.db("SportsManagement");
     const sportCollection = db.collection("sportCollection");
@@ -122,7 +122,7 @@ async function run() {
     });
 
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!",
     );
