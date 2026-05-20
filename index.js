@@ -34,6 +34,33 @@ async function run() {
 
     const db = client.db("SportsManagement");
     const sportCollection = db.collection("sportCollection");
+    const purchaseCollection = db.collection("Purchase");
+
+
+    //Purchase API Post
+    app.post("/purchase", async(req, res) => {
+      const purChaseData = req.body
+      console.log({purChaseData});
+      
+      const result = await purchaseCollection.insertOne(purChaseData);
+      // console.log('resul', result);
+      
+      res.send(result)
+    })
+    // purchase API 
+    app.get("/purchase/:userId", async(req, res)=> {
+      const {userId} = req.params
+      const result = await purchaseCollection.find({userId}).toArray();
+      res.send(result)
+    })
+    //purchase API delete
+    app.delete("/purchase/:purchaseId", async(req, res) => {
+      const {purchaseId} = req.params
+      const result = await purchaseCollection.deleteOne({
+        _id : new ObjectId(purchaseId)
+      })
+      res.send(result)
+    })
 
     // Delete
     app.delete("/sports/:id", async(req, res)=>{
