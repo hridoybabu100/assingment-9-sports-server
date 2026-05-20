@@ -55,6 +55,12 @@ async function run() {
     const sportCollection = db.collection("sportCollection");
     const purchaseCollection = db.collection("Purchase");
 
+    //extra home page data
+    app.get('/data', async(req, res)=>{
+      const result = await sportCollection.find().limit(6).toArray();
+      res.send(result)
+    })
+
     //Purchase API Post
     app.post("/purchase", verifyToken, async (req, res) => {
       const purChaseData = req.body;
